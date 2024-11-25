@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import { GitHub } from './github.js'
 import * as _ from 'lodash'
+import * as asana from 'asana'
 
 const https = require('https')
 
@@ -18,6 +19,18 @@ export async function run(): Promise<void> {
     await github.performAuth()
 
     console.log(await github.getPR())
+
+    const client = asana.Client.create().useAccessToken(
+      core.getInput('ASANA_PAT')
+    )
+    client.users
+      .me()
+      .then(user => {
+        console.log(`Hello, ${user.name}`)
+      })
+      .catch(error => {
+        console.error('Error:', error)
+      })
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
