@@ -21,7 +21,8 @@ export async function run(): Promise<void> {
     console.log(await github.getPR())
 
     const client = asana.Client.create().useAccessToken(
-      core.getInput('ASANA_PAT')
+      '2/1206483982378697/1208824408454690:c4f53eae40f6660b5ee537081212094a'
+      //core.getInput('ASANA_PAT')
     )
     client.users
       .me()

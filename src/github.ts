@@ -11,6 +11,7 @@ export class GitHub {
   constructor() {}
 
   async performAuth() {
+    console.log('GITHUB_TOKEN:', process.env.GITHUB_TOKEN)
     const auth = octoAuth.createActionAuth()
     const authentication = await auth()
 
@@ -31,7 +32,7 @@ export class GitHub {
         {
           owner: 'givve',
           repo: 'givve',
-          pull_number: core.getInput('pull_request')
+          pull_number: core.getInput('pull_request') || '7516'
         }
       )
 

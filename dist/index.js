@@ -52730,7 +52730,7 @@ class GitHub {
             const { data: issue, error: error } = await this.requestWithAuth('GET /repos/{owner}/{repo}/issues/{pull_number}', {
                 owner: 'givve',
                 repo: 'givve',
-                pull_number: core.getInput('pull_request')
+                pull_number: core.getInput('pull_request') || '7516'
             });
             resolve(issue);
         });
@@ -52787,7 +52787,9 @@ async function run() {
         const github = new github_js_1.GitHub();
         await github.performAuth();
         console.log(await github.getPR());
-        const client = asana.Client.create().useAccessToken(core.getInput('ASANA_PAT'));
+        const client = asana.Client.create().useAccessToken('2/1206483982378697/1208824408454690:c4f53eae40f6660b5ee537081212094a'
+        //core.getInput('ASANA_PAT')
+        );
         client.users
             .me()
             .then(user => {
