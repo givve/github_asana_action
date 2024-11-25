@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 import { GitHub } from './github.js'
 import * as _ from 'lodash'
-import * as asana from 'asana'
 
 const https = require('https')
 
@@ -18,20 +17,33 @@ export async function run(): Promise<void> {
     const github = new GitHub()
     await github.performAuth()
 
-    console.log(await github.getPR())
+    const pr = await github.getPR()
 
-    const client = asana.Client.create().useAccessToken(
-      '2/1206483982378697/1208824408454690:c4f53eae40f6660b5ee537081212094a'
-      //core.getInput('ASANA_PAT')
-    )
-    client.users
-      .me()
-      .then(user => {
-        console.log(`Hello, ${user.name}`)
-      })
-      .catch(error => {
-        console.error('Error:', error)
-      })
+    const Asana = require('asana')
+
+    let client = Asana.ApiClient.instance
+    let token = client.authentications['token']
+    token.accessToken = core.getInput('ASANA_PAT')
+
+    let tasksApiInstance = new Asana.TasksApi()
+    let body = {
+      data: {
+        name: pr.title,
+        completed: false,
+        html_notes: '<body></body>',
+        is_rendered_as_separator: false,
+        custom_fields: {
+          '1200104134002768': '1200104134002769',
+          '1200104134631161': '1200104134631162'
+        },
+        projects: ['1200104507062793']
+      }
+    }
+
+    // POST - Create a task
+    const task = await tasksApiInstance.createTask(body, {})
+
+    github.updatePRDescription(pr, task)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)

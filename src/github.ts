@@ -11,10 +11,8 @@ export class GitHub {
   constructor() {}
 
   async performAuth() {
-    console.log('GITHUB_TOKEN:', process.env.GITHUB_TOKEN)
     const auth = octoAuth.createActionAuth()
     const authentication = await auth()
-
     this.requestWithAuth = Request.request.defaults({
       request: {
         hook: auth.hook
@@ -25,7 +23,7 @@ export class GitHub {
     })
   }
 
-  async getPR(): Promise<string[]> {
+  async getPR(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const { data: issue, error: error } = await this.requestWithAuth(
         'GET /repos/{owner}/{repo}/issues/{pull_number}',
@@ -37,6 +35,24 @@ export class GitHub {
       )
 
       resolve(issue)
+    })
+  }
+
+  async updatePRDescription(pr: any, task: any) {
+    return new Promise(async (resolve, reject) => {
+      console.log(task)
+      // Beschreibung aktualisieren
+      await this.requestWithAuth(
+        'PATCH /repos/{owner}/{repo}/pulls/{pull_number}',
+        {
+          owner: 'givve',
+          repo: 'givve',
+          pull_number: pr.number,
+          body: pr.body + '<br \\>' + task.data.permalink_url
+        }
+      )
+
+      resolve(true)
     })
   }
 }

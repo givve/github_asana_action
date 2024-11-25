@@ -52735,6 +52735,19 @@ class GitHub {
             resolve(issue);
         });
     }
+    async updatePRDescription(pr, task) {
+        return new Promise(async (resolve, reject) => {
+            console.log(task);
+            // Beschreibung aktualisieren
+            await this.requestWithAuth('PATCH /repos/{owner}/{repo}/pulls/{pull_number}', {
+                owner: 'givve',
+                repo: 'givve',
+                pull_number: pr.number,
+                body: pr.body + '<br \\>' + task.data.permalink_url
+            });
+            resolve(true);
+        });
+    }
 }
 exports.GitHub = GitHub;
 
@@ -52773,7 +52786,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(2186));
 const github_js_1 = __nccwpck_require__(978);
-const asana = __importStar(__nccwpck_require__(576));
 const https = __nccwpck_require__(5687);
 const octoAuth = __nccwpck_require__(1188);
 const Request = __nccwpck_require__(8279);
@@ -52786,18 +52798,28 @@ async function run() {
     try {
         const github = new github_js_1.GitHub();
         await github.performAuth();
-        console.log(await github.getPR());
-        const client = asana.Client.create().useAccessToken('2/1206483982378697/1208824408454690:c4f53eae40f6660b5ee537081212094a'
-        //core.getInput('ASANA_PAT')
-        );
-        client.users
-            .me()
-            .then(user => {
-            console.log(`Hello, ${user.name}`);
-        })
-            .catch(error => {
-            console.error('Error:', error);
-        });
+        const pr = await github.getPR();
+        const Asana = __nccwpck_require__(576);
+        let client = Asana.ApiClient.instance;
+        let token = client.authentications['token'];
+        token.accessToken = core.getInput('ASANA_PAT');
+        let tasksApiInstance = new Asana.TasksApi();
+        let body = {
+            data: {
+                name: pr.title,
+                completed: false,
+                html_notes: '<body></body>',
+                is_rendered_as_separator: false,
+                custom_fields: {
+                    '1200104134002768': '1200104134002769',
+                    '1200104134631161': '1200104134631162'
+                },
+                projects: ['1200104507062793']
+            }
+        };
+        // POST - Create a task
+        const task = await tasksApiInstance.createTask(body, {});
+        github.updatePRDescription(pr, task);
     }
     catch (error) {
         // Fail the workflow run if an error occurs
