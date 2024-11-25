@@ -1,0 +1,24 @@
+name: 'Givve Asana Management'
+description: 'Provide a description here'
+author: 'PL Gutscheinsysteme GmbH'
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: 'heart'
+  color: 'red'
+
+# Define your inputs here.
+inputs:
+  pull_request:
+    description: 'Pull Request that triggered the action'
+    required: true
+  component:
+    description: 'Component to be deployed'
+    required: true
+  GITHUB_TOKEN:
+    description: 'Token for Repository Access'
+    required: true
+
+runs:
+  using: node20
+  main: dist/index.js
