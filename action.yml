@@ -12,9 +12,6 @@ inputs:
   pull_request:
     description: 'Pull Request that triggered the action'
     required: true
-  component:
-    description: 'Component to be deployed'
-    required: true
   GITHUB_TOKEN:
     description: 'Token for Repository Access'
     required: true

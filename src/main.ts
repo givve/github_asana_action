@@ -1,6 +1,4 @@
 import * as core from '@actions/core'
-import { checkOrWait } from './wait.js'
-import { getLocks, setLock } from './semaphore.js'
 import { GitHub } from './github.js'
 import * as _ from 'lodash'
 
