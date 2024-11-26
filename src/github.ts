@@ -48,7 +48,7 @@ export class GitHub {
           owner: 'givve',
           repo: 'givve',
           pull_number: pr.number,
-          body: pr.body + '<br \\>' + task.data.permalink_url
+          body: pr.body + ' - Fixes Task in Asana: ' + task.data.permalink_url
         }
       )
 

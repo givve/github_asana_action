@@ -1,7 +1,7 @@
 {
   "name": "typescript-action",
   "description": "Givve Asana Management",
-  "version": "v0.0.6",
+  "version": "v0.0.8",
   "author": "PL Gutscheinsysteme GmbH",
   "private": true,
   "homepage": "https://github.com/givve/github_asana_action",
