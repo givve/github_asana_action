@@ -40,7 +40,6 @@ export class GitHub {
 
   async updatePRDescription(pr: any, task: any) {
     return new Promise(async (resolve, reject) => {
-      console.log(task)
       // Beschreibung aktualisieren
       await this.requestWithAuth(
         'PATCH /repos/{owner}/{repo}/pulls/{pull_number}',
@@ -48,7 +47,7 @@ export class GitHub {
           owner: 'givve',
           repo: 'givve',
           pull_number: pr.number,
-          body: pr.body + ' - Fixes Task in Asana: ' + task.data.permalink_url
+          body: pr.body + ' --- \r\n Asana Task: ' + task.data.permalink_url
         }
       )
 
