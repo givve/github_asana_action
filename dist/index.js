@@ -70026,7 +70026,11 @@ async function run() {
                 data: {
                     name: pr.title,
                     completed: false,
-                    html_notes: '<body>Github PR: ' + pr.html_url + '</body>',
+                    html_notes: '<body>Github PR: <a href="' +
+                        pr.html_url +
+                        '">' +
+                        pr.html_url +
+                        '</a></body>',
                     is_rendered_as_separator: false,
                     custom_fields: {
                         '1200104134002768': '1200104134002769',
