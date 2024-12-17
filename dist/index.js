@@ -69959,7 +69959,8 @@ class GitHub {
                 owner: 'givve',
                 repo: 'givve',
                 pull_number: pr.number,
-                body: pr.body + ' --- \r\n Asana Task: ' + task.data.permalink_url
+                body: pr.body ||
+                    '' + '\r\n --- \r\n Asana Task: ' + task.data.permalink_url
             });
             resolve(true);
         });
