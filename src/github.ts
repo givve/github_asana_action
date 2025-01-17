@@ -48,8 +48,9 @@ export class GitHub {
           repo: 'givve',
           pull_number: pr.number,
           body:
-            pr.body ||
-            '' + '\r\n --- \r\n Asana Task: ' + task.data.permalink_url
+            (pr.body || '') +
+            '\r\n --- \r\n Asana Task: ' +
+            task.data.permalink_url
         }
       )
 
