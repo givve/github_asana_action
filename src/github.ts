@@ -49,7 +49,7 @@ export class GitHub {
           pull_number: pr.number,
           body:
             (pr.body || '') +
-            '\r\n --- \r\n Asana Task: ' +
+            '\r\n\r\n --- \r\n Asana Task: ' +
             task.data.permalink_url
         }
       )
